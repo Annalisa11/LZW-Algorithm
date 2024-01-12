@@ -29,7 +29,6 @@ function onSubmitDecodingValues() {
   }
 
   lzwDecoding();
-  console.table(tableDataDec);
   renderTableRowsDecoding();
   displayResultDecoding();
 }
@@ -51,7 +50,6 @@ function displayResultDecoding() {
 
   const resultP = document.getElementById('result_decoding');
   resultP.innerHTML = endResult;
-  console.warn(resultString, endResult);
 }
 
 function renderTableRowsDecoding() {
@@ -99,7 +97,6 @@ function createNewTableRowDecoding({
 
   if (akt) {
     resultDec.push(akt);
-    console.log(resultDec);
   }
 
   return tableRow;
@@ -121,13 +118,9 @@ function getCharSeqOfIndex(index) {
 function lzwDecoding() {
   let old = '';
   let k = charCodes[0];
-  console.log(charCodes);
   const firstAkt = getCharSeqOfIndex(k);
   old = k;
-  console.table(indexTableDec);
-  console.log(firstAkt);
   pushDecodingData(k, firstAkt, undefined, undefined, undefined, old, false);
-  console.table(tableDataDec);
   for (let i = 1; i < charCodes.length; i++) {
     const k = charCodes[i];
     if (isCharCodeAlreadyInTable(k)) {
@@ -137,7 +130,6 @@ function lzwDecoding() {
       const pq = p.concat(q);
       const pqIndex = indexDec;
       old = k;
-      console.log('true k, old: ', k, old, pq);
       indexTableDec.push({ index: pqIndex, charSequence: pq });
 
       pushDecodingData(k, akt, p, pq, pqIndex, old, false);
@@ -148,7 +140,6 @@ function lzwDecoding() {
       const pqIndex = indexDec;
       const akt = pq;
       old = k;
-      console.log('false k, old: ', k, old, pq);
 
       pushDecodingData(k, akt, p, pq, pqIndex, old, true);
     }
