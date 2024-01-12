@@ -8,9 +8,9 @@
     <link rel="stylesheet" type="text/css" href="stylesheet.css" />
   </head>
   <body>
+    <h1>LZW Codierung Generator</h1>
     <div class="header-container">
-      <h1>LZW Codierung Generator</h1>
-      <div>
+      <div class="generator-column">
         <form>
           <div class="input-with-label">
             <label for="word"> Wort </label>
@@ -31,22 +31,72 @@
             />
             <label for="index">Mit ASCII Tabelle</label>
           </div>
-          <input id="submit_button" type="button" value="generiere Lösung" />
+          <input
+            id="submit_button"
+            type="button"
+            value="generiere Lösung"
+            class="submit-button"
+          />
         </form>
-      </div>
-    </div>
 
-    <div class="container">
-      <div id="table" class="flex-table">
-        <div class="table-row head" id="first_row">
-          <div>lesen<br />(k)</div>
-          <div>Codetablle<br />(p & k)</div>
-          <div>Ausgabe</div>
-          <div>Puffer<br />(p)</div>
+        <div class="container">
+          <div id="table" class="flex-table">
+            <div class="table-row head" id="first_row">
+              <div>lesen<br />(k)</div>
+              <div>Codetablle<br />(p & k)</div>
+              <div>Ausgabe</div>
+              <div>Puffer<br />(p)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="generator-column">
+        <form>
+          <div class="input-with-label">
+            <label for="word"> Wort </label>
+            <input
+              id="word_input_decoding"
+              name="word"
+              type="text"
+              placeholder="z.B. 108-97-98-97-256"
+            />
+          </div>
+          <div class="input-with-label">
+            <input
+              id="ascii_checkbox_decoding"
+              name="index"
+              type="checkbox"
+              checked
+              disabled
+            />
+            <label for="index">Mit ASCII Tabelle</label>
+          </div>
+          <input
+            id="submit_button_decoding"
+            type="button"
+            value="generiere Lösung"
+            class="submit-button"
+          />
+        </form>
+
+        <div class="container">
+          <div id="table_decoding" class="flex-table">
+            <div class="table-row head decoding" id="first_row_decoding">
+              <div>lesen<br />(k)</div>
+              <div>
+                Ausgabe<br />(<span style="text-decoration: underline">q</span>)
+              </div>
+              <div>Puffer<br />(p)</div>
+              <div>Codetabelle<br />(p & q)</div>
+              <div>merken<br />(old)</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <script src="lzw-generator.js"></script>
+    <script src="lzw-decoding.js"></script>
   </body>
 </html>
