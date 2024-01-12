@@ -5,6 +5,7 @@ Well, here we are...
 
 ## ⚠️ What to be aware of
 - the generating of the solution works only if you press the 'generate solution' button (doesn't work if you press enter)
+- the generator is in German
 - there is no decoding generator yet... might add it later on maybe
 
 ## 🚀 How to run it 
