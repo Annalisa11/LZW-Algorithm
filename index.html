@@ -142,16 +142,10 @@
       function onSubmitValues() {
         word = wordInput.value;
         clearTable();
-        console.log('---- ascii checkbox ', asciiCheckbox.checked);
         if (asciiCheckbox.checked) {
           index = 256;
           indexTable.push(...asciiArray);
         }
-        console.log('----- starting values: ', index, indexTable);
-        console.log(asciiArray[97]);
-        console.log(asciiArray[108]);
-        console.log(asciiArray[98]);
-
         lzwEncoding();
         console.table(tableData);
         renderTableRows();
@@ -201,7 +195,6 @@
       }
 
       function isCharSequenceAlreadyInTable(targetCharSequence) {
-        console.log(indexTable);
         return indexTable.some(
           (obj) => obj.charSequence === targetCharSequence
         );
@@ -220,20 +213,11 @@
         let k = '';
         let p = k;
         let result;
-        console.log('k, p, result init: ', k, p, result);
-        console.log('word, index: ', word, index);
         for (let i = 0; i < word.length; i++) {
           let k = word.charAt(i);
           const pk = p.concat(k);
-          console.log('i, k, pk: ', i, k, pk);
-
-          console.log(
-            'is charseq in table: ',
-            isCharSequenceAlreadyInTable(pk)
-          );
           if (isCharSequenceAlreadyInTable(pk)) {
             p = pk;
-            console.log('true: p=pk: ', p);
             tableData.push({
               k: k,
               pk: '',
@@ -243,15 +227,12 @@
               p: p,
             });
           } else {
-            console.log('false: index, pk: ', index, pk);
             indexTable.push({ index: index, charSequence: pk });
             index++;
-            console.log('increment index: ', index);
             result = getIndexOfCharSeq(p);
             const pkIndex = getIndexOfCharSeq(pk);
             const oldP = p;
             p = k;
-            console.log('result, pkIndex, oldP, p: ', result, pkIndex, oldP, p);
             tableData.push({
               k: k,
               pk: pk,
