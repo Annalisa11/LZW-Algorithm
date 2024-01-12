@@ -142,20 +142,14 @@
       function onSubmitValues() {
         word = wordInput.value;
         clearTable();
+
         if (asciiCheckbox.checked) {
           index = 256;
           indexTable.push(...asciiArray);
         }
-        lzwEncoding();
-        console.table(tableData);
-        renderTableRows();
-      }
 
-      function renderTableRows() {
-        tableData.forEach((rowData) => {
-          const rowElement = createNewTableRow(rowData);
-          table.appendChild(rowElement);
-        });
+        lzwEncoding();
+        renderTableRows();
       }
 
       function clearTable() {
@@ -166,6 +160,13 @@
         while (table.lastElementChild.classList[1] !== 'head') {
           table.removeChild(table.lastElementChild);
         }
+      }
+
+      function renderTableRows() {
+        tableData.forEach((rowData) => {
+          const rowElement = createNewTableRow(rowData);
+          table.appendChild(rowElement);
+        });
       }
 
       function createNewTableRow({
@@ -218,14 +219,7 @@
           const pk = p.concat(k);
           if (isCharSequenceAlreadyInTable(pk)) {
             p = pk;
-            tableData.push({
-              k: k,
-              pk: '',
-              pkIndex: undefined,
-              resultIndex: undefined,
-              resultChar: '',
-              p: p,
-            });
+            pushData(k, '', undefined, undefined, '', p);
           } else {
             indexTable.push({ index: index, charSequence: pk });
             index++;
@@ -233,25 +227,22 @@
             const pkIndex = getIndexOfCharSeq(pk);
             const oldP = p;
             p = k;
-            tableData.push({
-              k: k,
-              pk: pk,
-              pkIndex: pkIndex,
-              resultIndex: result,
-              resultChar: oldP,
-              p: p,
-            });
+            pushData(k, pk, pkIndex, result, oldP, p);
           }
         }
         oldP = p;
         result = getIndexOfCharSeq(p);
+        pushData('', '', undefined, result, oldP, undefined);
+      }
+
+      function pushData(k, pk, pkIndex, resultIndex, resultChar, p) {
         tableData.push({
-          k: '',
-          pk: '',
-          pkIndex: undefined,
-          resultIndex: result,
-          resultChar: oldP,
-          p: undefined,
+          k: k,
+          pk: pk,
+          pkIndex: pkIndex,
+          resultIndex: resultIndex,
+          resultChar: resultChar,
+          p: p,
         });
       }
     </script>
