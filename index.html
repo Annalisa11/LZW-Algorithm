@@ -92,7 +92,7 @@
               id="word_input"
               name="word"
               type="text"
-              placeholder="z.B. ballala"
+              placeholder="z.B. labala"
             />
           </div>
           <div class="input-with-label">
@@ -140,7 +140,7 @@
       submitButton.addEventListener('click', onSubmitValues);
 
       function onSubmitValues() {
-        console.warn(table.childNodes.length);
+        word = wordInput.value;
         clearTable();
         console.log('---- ascii checkbox ', asciiCheckbox.checked);
         if (asciiCheckbox.checked) {
@@ -151,7 +151,6 @@
         console.log(asciiArray[97]);
         console.log(asciiArray[108]);
         console.log(asciiArray[98]);
-        word = wordInput.value;
 
         lzwEncoding();
         console.table(tableData);
@@ -166,9 +165,12 @@
       }
 
       function clearTable() {
-        console.warn('clear Table');
-        while (table.lastChild.id !== 'first_row') {
-          table.removeChild(table.lastChild);
+        indexTable.length = 0;
+        tableData.length = 0;
+        wordInput.value = '';
+
+        while (table.lastElementChild.classList[1] !== 'head') {
+          table.removeChild(table.lastElementChild);
         }
       }
 
