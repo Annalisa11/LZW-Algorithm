@@ -61,6 +61,7 @@
       const wordInput = document.getElementById('word_input');
       const indexInput = document.getElementById('index_input');
       const submitButton = document.getElementById('submit_button');
+      const table = document.getElementById('table');
       let word = '';
       let index;
       const indexTable = [...asciiArray];
@@ -78,9 +79,41 @@
 
         lzwEncoding();
         console.table(tableData);
+        renderTableRows();
       }
 
-      function renderTableRows() {}
+      function renderTableRows() {
+        tableData.forEach((rowData) => {
+          const rowElement = createNewTableRow(rowData);
+          table.appendChild(rowElement);
+        });
+      }
+
+      function createNewTableRow({
+        k,
+        pk,
+        pkIndex,
+        resultIndex,
+        resultChar,
+        p,
+      }) {
+        const tableRow = document.createElement('div');
+        tableRow.classList.add('table-row', 'head');
+        const formattedValues = [
+          k ?? '',
+          (pk && `<${pk}>, ${pkIndex}`) ?? '',
+          (resultIndex && `${resultIndex} (${resultChar})`) ?? '',
+          (p && `<${p}>`) ?? '< >',
+        ];
+
+        formattedValues.forEach((value) => {
+          const columnDiv = document.createElement('div');
+          columnDiv.textContent = value;
+          tableRow.appendChild(columnDiv);
+        });
+
+        return tableRow;
+      }
 
       function isCharSequenceAlreadyInTable(targetCharSequence) {
         return indexTable.some(
@@ -144,6 +177,16 @@
             });
           }
         }
+        oldP = p;
+        result = getIndexOfCharSeq(p);
+        tableData.push({
+          k: '',
+          pk: '',
+          pkIndex: undefined,
+          resultIndex: result,
+          resultChar: oldP,
+          p: undefined,
+        });
       }
     </script>
   </body>
