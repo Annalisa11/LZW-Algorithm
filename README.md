@@ -1,6 +1,6 @@
 # LZW-Generator
 
-Since my students asked me to give them more material to practive encoding with the LZW algoritm, I thought: why bother make a few practice sheets per hand, when I can code something that gives them unlimited solutions?  
+Since my students asked me to give them more material to practice the LZW algoritm, I thought: why bother make a few practice sheets per hand, when I can code something that gives them unlimited solutions?  
 Well, here we are... 
 
 ## ⚠️ What to be aware of
