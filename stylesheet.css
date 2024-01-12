@@ -92,3 +92,7 @@ h1 {
 .underlined {
   text-decoration: underline;
 }
+
+.result {
+  font-weight: bold;
+}

@@ -13,6 +13,7 @@ let word = '';
 let index = 0;
 const indexTable = [];
 const tableData = [];
+const result = [];
 
 submitButton.addEventListener('click', onSubmitValues);
 
@@ -27,11 +28,28 @@ function onSubmitValues() {
 
   lzwEncoding();
   renderTableRows();
+  displayResult();
+}
+
+function createResultLabel() {
+  const resultLabel = document.createElement('span');
+  resultLabel.textContent = 'Ergebnis: ';
+  resultLabel.classList.add('result');
+  return resultLabel;
+}
+
+function displayResult() {
+  const resultString = result.join('-');
+  const endResult = createResultLabel().outerHTML + resultString;
+
+  const resultP = document.getElementById('result');
+  resultP.innerHTML = endResult;
 }
 
 function clearTable() {
   indexTable.length = 0;
   tableData.length = 0;
+  result.length = 0;
 
   while (table.lastElementChild.classList[1] !== 'head') {
     table.removeChild(table.lastElementChild);
@@ -60,6 +78,10 @@ function createNewTableRow({ k, pk, pkIndex, resultIndex, resultChar, p }) {
     columnDiv.textContent = value;
     tableRow.appendChild(columnDiv);
   });
+
+  if (pkIndex) {
+    result.push(pkIndex);
+  }
 
   return tableRow;
 }

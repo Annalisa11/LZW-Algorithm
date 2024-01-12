@@ -14,6 +14,7 @@ let indexDec = 0;
 const indexTableDec = [];
 const tableDataDec = [];
 const charCodes = [];
+const resultDec = [];
 
 submitButtonDec.addEventListener('click', onSubmitDecodingValues);
 
@@ -30,16 +31,27 @@ function onSubmitDecodingValues() {
   lzwDecoding();
   console.table(tableDataDec);
   renderTableRowsDecoding();
+  displayResultDecoding();
 }
 
 function clearTableDecoding() {
   indexTableDec.length = 0;
   tableDataDec.length = 0;
   charCodes.length = 0;
+  result.length = 0;
 
   while (tableDec.lastElementChild.classList[1] !== 'head') {
     tableDec.removeChild(tableDec.lastElementChild);
   }
+}
+
+function displayResultDecoding() {
+  const resultString = resultDec.join('');
+  const endResult = createResultLabel().outerHTML + resultString;
+
+  const resultP = document.getElementById('result_decoding');
+  resultP.innerHTML = endResult;
+  console.warn(resultString, endResult);
 }
 
 function renderTableRowsDecoding() {
@@ -71,7 +83,6 @@ function createNewTableRowDecoding({
     return '';
   };
 
-  console.warn('pq: ', pq);
   const formattedValues = [
     k ?? '',
     akt && !isSpecialCase ? formatValueWithUnderline(akt) : akt ?? '',
@@ -85,6 +96,11 @@ function createNewTableRowDecoding({
     columnDiv.innerHTML = value; // Use innerHTML to parse HTML content
     tableRow.appendChild(columnDiv);
   });
+
+  if (akt) {
+    resultDec.push(akt);
+    console.log(resultDec);
+  }
 
   return tableRow;
 }
