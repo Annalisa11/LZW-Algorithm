@@ -27,13 +27,14 @@
           type="text"
           placeholder="z.B. ballala"
         />
-        <label for="index"> ab Index </label>
         <input
-          id="index_input"
+          id="ascii_checkbox"
           name="index"
-          type="number"
-          placeholder="z.B. 256"
+          type="checkbox"
+          checked
+          disabled
         />
+        <label for="index">Mit ASCII Tabelle</label>
         <input id="submit_button" type="button" value="generiere Lösung" />
       </form>
     </div>
@@ -49,8 +50,6 @@
       </div>
     </div>
     <script>
-      console.log('ready');
-
       let asciiArray = [];
 
       for (let i = 0; i < 256; i++) {
@@ -59,23 +58,27 @@
       }
 
       const wordInput = document.getElementById('word_input');
-      const indexInput = document.getElementById('index_input');
+      const asciiCheckbox = document.getElementById('ascii_checkbox');
       const submitButton = document.getElementById('submit_button');
       const table = document.getElementById('table');
       let word = '';
-      let index;
-      const indexTable = [...asciiArray];
+      let index = 0;
+      const indexTable = [];
       const tableData = [];
 
       submitButton.addEventListener('click', onSubmitValues);
 
       function onSubmitValues() {
-        console.log('test');
+        console.log('---- ascii checkbox ', asciiCheckbox.checked);
+        if (asciiCheckbox.checked) {
+          index = 256;
+          indexTable.push(...asciiArray);
+        }
+        console.log('----- starting values: ', index, indexTable);
         console.log(asciiArray[97]);
         console.log(asciiArray[108]);
         console.log(asciiArray[98]);
         word = wordInput.value;
-        index = indexInput.value;
 
         lzwEncoding();
         console.table(tableData);
@@ -116,6 +119,7 @@
       }
 
       function isCharSequenceAlreadyInTable(targetCharSequence) {
+        console.log(indexTable);
         return indexTable.some(
           (obj) => obj.charSequence === targetCharSequence
         );
@@ -124,7 +128,6 @@
       function getIndexOfCharSeq(targetCharSeq) {
         for (let i = 0; i < indexTable.length; i++) {
           if (indexTable[i].charSequence === targetCharSeq) {
-            console.log('indexTable i: ', indexTable[i].index);
             return indexTable[i].index;
           }
         }
