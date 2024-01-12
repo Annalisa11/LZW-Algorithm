@@ -79,8 +79,8 @@ function createNewTableRow({ k, pk, pkIndex, resultIndex, resultChar, p }) {
     tableRow.appendChild(columnDiv);
   });
 
-  if (pkIndex) {
-    result.push(pkIndex);
+  if (resultIndex) {
+    result.push(resultIndex);
   }
 
   return tableRow;
