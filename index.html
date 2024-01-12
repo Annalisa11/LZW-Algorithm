@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .flex-table {
+        margin-top: 3rem;
+      }
+
+      .table-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LZW Codierung Generator</h1>
+    <div>
+      <form>
+        <label for="word"> Wort </label>
+        <input
+          id="word_input"
+          name="word"
+          type="text"
+          placeholder="z.B. ballala"
+        />
+        <label for="index"> ab Index </label>
+        <input
+          id="index_input"
+          name="index"
+          type="number"
+          placeholder="z.B. 256"
+        />
+        <input id="submit_button" type="button" value="generiere Lösung" />
+      </form>
+    </div>
+
+    <div class="container">
+      <div id="table" class="flex-table">
+        <div class="table-row head">
+          <div>lesen</div>
+          <div>Codetablle</div>
+          <div>Ausgabe</div>
+          <div>Puffer</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      console.log('ready');
+
+      let asciiArray = [];
+
+      for (let i = 0; i < 256; i++) {
+        let charSequence = String.fromCharCode(i);
+        asciiArray.push({ index: i, charSequence: charSequence });
+      }
+
+      const wordInput = document.getElementById('word_input');
+      const indexInput = document.getElementById('index_input');
+      const submitButton = document.getElementById('submit_button');
+      let word = '';
+      let index;
+      const indexTable = [...asciiArray];
+      const tableData = [];
+
+      submitButton.addEventListener('click', onSubmitValues);
+
+      function onSubmitValues() {
+        console.log('test');
+        console.log(asciiArray[97]);
+        console.log(asciiArray[108]);
+        console.log(asciiArray[98]);
+        word = wordInput.value;
+        index = indexInput.value;
+
+        lzwEncoding();
+        console.table(tableData);
+      }
+
+      function renderTableRows() {}
+
+      function isCharSequenceAlreadyInTable(targetCharSequence) {
+        return indexTable.some(
+          (obj) => obj.charSequence === targetCharSequence
+        );
+      }
+
+      function getIndexOfCharSeq(targetCharSeq) {
+        for (let i = 0; i < indexTable.length; i++) {
+          if (indexTable[i].charSequence === targetCharSeq) {
+            console.log('indexTable i: ', indexTable[i].index);
+            return indexTable[i].index;
+          }
+        }
+        return -1;
+      }
+
+      function lzwEncoding() {
+        let k = '';
+        let p = k;
+        let result;
+        console.log('k, p, result init: ', k, p, result);
+        console.log('word, index: ', word, index);
+        for (let i = 0; i < word.length; i++) {
+          let k = word.charAt(i);
+          const pk = p.concat(k);
+          console.log('i, k, pk: ', i, k, pk);
+
+          console.log(
+            'is charseq in table: ',
+            isCharSequenceAlreadyInTable(pk)
+          );
+          if (isCharSequenceAlreadyInTable(pk)) {
+            p = pk;
+            console.log('true: p=pk: ', p);
+            tableData.push({
+              k: k,
+              pk: '',
+              pkIndex: undefined,
+              resultIndex: undefined,
+              resultChar: '',
+              p: p,
+            });
+          } else {
+            console.log('false: index, pk: ', index, pk);
+            indexTable.push({ index: index, charSequence: pk });
+            index++;
+            console.log('increment index: ', index);
+            result = getIndexOfCharSeq(p);
+            const pkIndex = getIndexOfCharSeq(pk);
+            const oldP = p;
+            p = k;
+            console.log('result, pkIndex, oldP, p: ', result, pkIndex, oldP, p);
+            tableData.push({
+              k: k,
+              pk: pk,
+              pkIndex: pkIndex,
+              resultIndex: result,
+              resultChar: oldP,
+              p: p,
+            });
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
