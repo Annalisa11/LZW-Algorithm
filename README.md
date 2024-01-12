@@ -6,7 +6,7 @@ Well, here we are...
 ## ⚠️ What to be aware of
 - the generating of the solution works only if you press the 'Generiere Lösung' button (doesn't work if you press enter)
 - the generator is in German
-- there is no decoding generator yet... might add it later on maybe
+- I don't provide the guarantee that the calculated results are right. 
 
 ## 🚀 How to run it 
 
