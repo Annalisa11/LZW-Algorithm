@@ -1,3 +1,10 @@
+let asciiArrayDec = [];
+
+for (let i = 0; i < 256; i++) {
+  let charSequence = String.fromCharCode(i);
+  asciiArrayDec.push({ index: i, charSequence: charSequence });
+}
+
 const wordInputDec = document.getElementById('word_input_decoding');
 const asciiCheckboxDec = document.getElementById('ascii_checkbox_decoding');
 const submitButtonDec = document.getElementById('submit_button_decoding');
@@ -11,57 +18,71 @@ const charCodes = [];
 submitButtonDec.addEventListener('click', onSubmitDecodingValues);
 
 function onSubmitDecodingValues() {
-  word = wordInputDec.value;
-  charCodes.push(...word.split('-'));
+  wordDec = wordInputDec.value;
   clearTableDecoding();
+  charCodes.push(...wordDec.split('-'));
 
-  if (asciiCheckbox.checked) {
+  if (asciiCheckboxDec.checked) {
     indexDec = 256;
-    indexTableDec.push(...asciiArray);
+    indexTableDec.push(...asciiArrayDec);
   }
 
   lzwDecoding();
   console.table(tableDataDec);
-  //   renderTableRowsDecoding();
+  renderTableRowsDecoding();
 }
 
 function clearTableDecoding() {
   indexTableDec.length = 0;
   tableDataDec.length = 0;
-  wordDec.value = '';
+  charCodes.length = 0;
 
-  while (table.lastElementChild.classList[1] !== 'head') {
-    table.removeChild(table.lastElementChild);
+  while (tableDec.lastElementChild.classList[1] !== 'head') {
+    tableDec.removeChild(tableDec.lastElementChild);
   }
 }
 
 function renderTableRowsDecoding() {
   tableDataDec.forEach((rowData) => {
     const rowElement = createNewTableRowDecoding(rowData);
-    table.appendChild(rowElement);
+    tableDec.appendChild(rowElement);
   });
 }
 
 function createNewTableRowDecoding({
   k,
-  pk,
-  pkIndex,
-  resultIndex,
-  resultChar,
+  akt,
   p,
+  pq,
+  pqIndex,
+  old,
+  isSpecialCase,
 }) {
   const tableRow = document.createElement('div');
   tableRow.classList.add('table-row', 'data');
+
+  const formatValueWithUnderline = (text) => {
+    if (text) {
+      const span = document.createElement('span');
+      span.textContent = text.charAt(0);
+      span.classList.add('underlined');
+      return span.outerHTML + text.substring(1);
+    }
+    return '';
+  };
+
+  console.warn('pq: ', pq);
   const formattedValues = [
     k ?? '',
-    (pk && `<${pk}>, ${pkIndex}`) ?? '',
-    (resultIndex && `${resultIndex} (${resultChar})`) ?? '',
-    (p && `<${p}>`) ?? '< >',
+    akt && !isSpecialCase ? formatValueWithUnderline(akt) : akt ?? '',
+    p && isSpecialCase ? formatValueWithUnderline(p) : p ?? '',
+    pq && pqIndex ? `&lt;${pq}&gt;, ${pqIndex}` : '',
+    old ?? '',
   ];
 
   formattedValues.forEach((value) => {
     const columnDiv = document.createElement('div');
-    columnDiv.textContent = value;
+    columnDiv.innerHTML = value; // Use innerHTML to parse HTML content
     tableRow.appendChild(columnDiv);
   });
 
@@ -84,17 +105,13 @@ function getCharSeqOfIndex(index) {
 function lzwDecoding() {
   let old = '';
   let k = charCodes[0];
+  console.log(charCodes);
   const firstAkt = getCharSeqOfIndex(k);
   old = k;
-  pushDecodingData(
-    k,
-    firstAkt,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    old
-  );
+  console.table(indexTableDec);
+  console.log(firstAkt);
+  pushDecodingData(k, firstAkt, undefined, undefined, undefined, old, false);
+  console.table(tableDataDec);
   for (let i = 1; i < charCodes.length; i++) {
     const k = charCodes[i];
     if (isCharCodeAlreadyInTable(k)) {
@@ -104,10 +121,10 @@ function lzwDecoding() {
       const pq = p.concat(q);
       const pqIndex = indexDec;
       old = k;
-      console.log('true k, old: ', k, old);
+      console.log('true k, old: ', k, old, pq);
       indexTableDec.push({ index: pqIndex, charSequence: pq });
 
-      pushDecodingData(k, akt, q, p, pq, pqIndex, old);
+      pushDecodingData(k, akt, p, pq, pqIndex, old, false);
     } else {
       const p = getCharSeqOfIndex(old);
       const q = p.charAt(0);
@@ -115,22 +132,22 @@ function lzwDecoding() {
       const pqIndex = indexDec;
       const akt = pq;
       old = k;
-      console.log('false k, old: ', k, old);
+      console.log('false k, old: ', k, old, pq);
 
-      pushDecodingData(k, akt, q, p, pq, pqIndex, old);
+      pushDecodingData(k, akt, p, pq, pqIndex, old, true);
     }
     indexDec++;
   }
 }
 
-function pushDecodingData(k, akt, q, p, pq, pqIndex, old) {
+function pushDecodingData(k, akt, p, pq, pqIndex, old, isSpecialCase) {
   tableDataDec.push({
     k: k,
     akt: akt,
-    q: q,
     p: p,
     pq: pq,
     pqIndex: pqIndex,
     old: old,
+    isSpecialCase: isSpecialCase,
   });
 }

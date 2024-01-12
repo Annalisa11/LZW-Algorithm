@@ -32,7 +32,6 @@ function onSubmitValues() {
 function clearTable() {
   indexTable.length = 0;
   tableData.length = 0;
-  wordInput.value = '';
 
   while (table.lastElementChild.classList[1] !== 'head') {
     table.removeChild(table.lastElementChild);
