@@ -37,7 +37,7 @@ function clearTableDecoding() {
   indexTableDec.length = 0;
   tableDataDec.length = 0;
   charCodes.length = 0;
-  result.length = 0;
+  resultDec.length = 0;
 
   while (tableDec.lastElementChild.classList[1] !== 'head') {
     tableDec.removeChild(tableDec.lastElementChild);
