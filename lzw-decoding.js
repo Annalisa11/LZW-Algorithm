@@ -140,6 +140,7 @@ function lzwDecoding() {
       const pqIndex = indexDec;
       const akt = pq;
       old = k;
+      indexTableDec.push({ index: pqIndex, charSequence: pq });
 
       pushDecodingData(k, akt, p, pq, pqIndex, old, true);
     }
