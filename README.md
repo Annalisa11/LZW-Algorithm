@@ -1,7 +1,9 @@
 # LZW-Generator
 
 Since my students asked me to give them more material to practice the LZW algorithm, I thought: why bother make a few practice sheets per hand, when I can code something that gives them unlimited solutions?  
-Well, here we are... 
+Well, here we are...   
+
+![preview](img/preview.png)
 
 ## ⚠️ What to be aware of
 - the generating of the solution works only if you press the 'Generiere Lösung' button (doesn't work if you press enter)
